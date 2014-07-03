@@ -1,9 +1,11 @@
-#read file
+require 'yaml'
 require './hotel_system'
-hotel_sys = HotelSystem.new
+
+hotels = YAML.load_file "hotels.yml"
+hotel_sys = HotelSystem.new(hotels)
 
 File.open("./input_list", "r") do |file|
-  while line=file.gets and line.strip != ''
-    puts hotel_sys.find_cheapes_hotel(line)
+  while line = file.gets
+    puts hotel_sys.find_cheapest_hotel(line.strip)
   end
 end

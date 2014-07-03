@@ -11,18 +11,10 @@ class ReservInfo
   end
 
   def extract_live_time(live_str)
-    tmp = live_str.split(":", 2)
-    tmp.length<2 and return false
-    @customer_type = tmp[0].downcase
-    live_time_regx =/.*?\(([^\(\)]*)\),*/
-    @live_time_list = tmp[1].scan(live_time_regx).collect { |item| item[0].strip}
-    #puts @live_time_list
-    #.collect { |live_time| live_time.downcase }
-    return valid?
+    result = live_str.scan(/^(Regular|Rewards): \S+\((\w+)\), \S+\((\w+)\), \S+\((\w+)\)$/).flatten
+    @customer_type = result.shift.downcase
+    @live_time_list = result
+    result.size < 4
   end
 
-  def valid?()
-    (@customer_type.nil? || @live_time_list.nil?) and return false
-    return true
-  end
 end
