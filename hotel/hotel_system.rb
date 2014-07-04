@@ -1,5 +1,6 @@
-require './hotel'
-require './reservinfo'
+require 'hotel'
+require 'reservinfo'
+require 'input_parser'
 
 class HotelSystem
   attr_accessor :hotels_list
@@ -12,10 +13,9 @@ class HotelSystem
   end
 
 
-  def find_cheapest_hotel(live_str)
-    revers_info = ReservInfo.new
-    if revers_info.extract_live_time(live_str)
-      @hotels_list.sort! { |a, b| a.compute_price(revers_info)<=>b.compute_price(revers_info) }[0].name
+  def find_cheapest_hotel(revers_info)
+    if revers_info.valid?
+      @hotels_list.sort! { |a, b| a.compute_price(revers_info) <=> b.compute_price(revers_info) }.first.name
     else
       "%s is invalid format" % live_str
     end
